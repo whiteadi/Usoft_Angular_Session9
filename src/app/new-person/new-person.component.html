@@ -1,0 +1,13 @@
+<h1>Add new {{ PersonMeta.tablename }}</h1>
+
+<form #myform="ngForm" (ngSubmit)="onSubmit(myform)">
+  <table>
+    <tr *ngFor="let col of PersonMeta.columns">
+      <td class="{{ col.pk == 'yes' ? 'keyfield' : '' }}">{{ col.name }}</td>
+      <td>
+        <input type="text" name="{{ col.name }}" id="{{ col.name }}" ngModel />
+      </td>
+    </tr>
+  </table>
+  <input type="submit" value="insert into {{ PersonMeta.tablename }}" />
+</form>

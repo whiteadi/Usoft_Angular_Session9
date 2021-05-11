@@ -1,1 +1,17 @@
-/* You can add global styles to this file, and also import other style files */
+ul li {
+  cursor: pointer;
+  display: inline-block;
+  padding: 20px;
+  margin: 5px;
+  background-color: whitesmoke;
+  border-radius: 5px;
+  border: 1px solid black;
+}
+
+ul li:hover {
+  background-color: lightgrey;
+}
+
+li.active {
+  background-color: gainsboro;
+}
