@@ -48,6 +48,20 @@ export class MetaService {
       );
   }
 
+  resolvePut(tableName: string, primaryKeyName: string, primaryKeyValue: string, rowData: any): Observable<any> {
+    const newRow = `<${tableName} ${rowData} />`;
+    return this.http.put(this.apiURL + `/${tableName};${primaryKeyName}=${primaryKeyValue}`, newRow, this.httpOptionsPost)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  resolveDelete(tableName: string, primaryKeyName: string, primaryKeyValue: string): Observable<any> {
+    return this.http.delete(this.apiURL + `/${tableName};${primaryKeyName}=${primaryKeyValue}`, this.httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 
   // Error handling 
   handleError(error: any) {

@@ -1,0 +1,12 @@
+<button (click)="getSelectedRowData()">Delete selected row(s)</button>
+<ag-grid-angular
+  style="width: 1500px; height: 500px"
+  class="ag-theme-alpine"
+  id="myGrid"
+  [rowData]="rowData"
+  [columnDefs]="columnDefs"
+  rowSelection="multiple"
+  (cellValueChanged)="onCellValueChanged($event)"
+  (gridReady)="onGridReady($event)"
+>
+</ag-grid-angular>

@@ -4,12 +4,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { PersonsComponent } from './persons/persons.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { NewPersonComponent } from './new-person/new-person.component';
+import { PersonsGridComponent } from './persons-grid/persons-grid.component';
 
 const routes: Routes = [{
   path: 'persons',
   component: PersonsComponent
 },
 { path: 'new-person', component: NewPersonComponent },
+{ path: 'crud', component: PersonsGridComponent },
 { path: '', redirectTo: '/persons', pathMatch: 'full' },
 {
   path: '**',
