@@ -1,7 +1,18 @@
-<button (click)="getSelectedRowData()">Delete selected row(s)</button>
+<mat-card
+  fxFlex
+  fxLayoutAlign="start center"
+  fxLayout="column"
+  class="containedstuff"
+  [style.borderRadius.px]="'0'"
+>
+  <button (click)="getSelectedRowData()" mat-raised-button color="accent">
+    Delete selected row(s)<mat-icon>delete</mat-icon>
+  </button>
+</mat-card>
+
 <ag-grid-angular
-  style="width: 1500px; height: 500px"
-  class="ag-theme-alpine"
+  style="width: 1500px; height: 50%"
+  class="ag-theme-material"
   id="myGrid"
   [rowData]="rowData"
   [columnDefs]="columnDefs"

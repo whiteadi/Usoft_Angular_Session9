@@ -1,11 +1,12 @@
-<ul>
-  <li routerLink="/persons" routerLinkActive="active">Go to see all persons</li>
-</ul>
-<ul>
-  <li routerLink="/new-person" routerLinkActive="active">Add new person</li>
-</ul>
-<ul>
-  <li routerLink="/crud" routerLinkActive="active">Manage persons</li>
-</ul>
-
+<mat-action-list>
+  <button mat-list-item routerLink="/persons" routerLinkActive="active">
+    <mat-icon>list_alt</mat-icon> Go to see all persons
+  </button>
+  <button mat-list-item routerLink="/new-person" routerLinkActive="active">
+    <mat-icon>add</mat-icon> Add new person
+  </button>
+  <button mat-list-item routerLink="/crud" routerLinkActive="active">
+    <mat-icon>edit</mat-icon> Manage persons
+  </button>
+</mat-action-list>
 <router-outlet></router-outlet>

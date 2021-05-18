@@ -1,0 +1,12 @@
+table {
+  width: 100%;
+}
+
+button > mat-icon {
+  vertical-align: middle;
+}
+
+.containedstuff {
+  padding: 15px;
+  overflow: auto;
+}

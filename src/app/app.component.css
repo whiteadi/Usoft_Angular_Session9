@@ -1,13 +1,12 @@
-table,
-th,
-td {
-  border: 1px solid grey;
-  border-collapse: collapse;
-  padding: 5px;
-}
 table tr:nth-child(odd) {
-  background-color: #f1f1f1;
+  background-color: #ffffff;
 }
 table tr:nth-child(even) {
-  background-color: #ffffff;
+  background-color: #f1f1f1;
+}
+button.active {
+  background-color: gainsboro;
+}
+th, td {
+padding: 5px;
 }

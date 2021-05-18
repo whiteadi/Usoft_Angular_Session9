@@ -1,20 +1,5 @@
 @import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
-@import "../node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css";
+@import "../node_modules/ag-grid-community/dist/styles/ag-theme-material.css";
 
-ul li {
-  cursor: pointer;
-  display: inline-block;
-  padding: 20px;
-  margin: 5px;
-  background-color: whitesmoke;
-  border-radius: 5px;
-  border: 1px solid black;
-}
-
-ul li:hover {
-  background-color: lightgrey;
-}
-
-li.active {
-  background-color: gainsboro;
-}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
