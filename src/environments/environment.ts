@@ -5,6 +5,7 @@
 export const environment = {
   production: false.valueOf,
   apiUrl: 'http://localhost:8112/TravelTables/travel',
+  apiRoot: 'http://localhost:8112',
   user: 'TRAVEL99',
   password: 'TRAVEL99'
 };

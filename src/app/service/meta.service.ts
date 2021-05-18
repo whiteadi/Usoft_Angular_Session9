@@ -11,6 +11,7 @@ export class MetaService {
 
   // API end-point URL
   private readonly apiURL = environment.apiUrl;
+  private readonly apiRoot = environment.apiRoot;
 
   constructor(private http: HttpClient) { }
 
@@ -48,17 +49,41 @@ export class MetaService {
       );
   }
 
-  resolvePut(tableName: string, primaryKeyName: string, primaryKeyValue: string, rowData: any): Observable<any> {
+  resolvePut(tableName: string, primaryKeysWithValues: string, rowData: any): Observable<any> {
     const newRow = `<${tableName} ${rowData} />`;
-    return this.http.put(this.apiURL + `/${tableName};${primaryKeyName}=${primaryKeyValue}`, newRow, this.httpOptionsPost)
+    return this.http.put(this.apiURL + `/${tableName}${primaryKeysWithValues}`, newRow, this.httpOptionsPost)
       .pipe(
         catchError(this.handleError)
       );
   }
 
-  resolveDelete(tableName: string, primaryKeyName: string, primaryKeyValue: string): Observable<any> {
-    return this.http.delete(this.apiURL + `/${tableName};${primaryKeyName}=${primaryKeyValue}`, this.httpOptions)
+  resolveDelete(tableName: string, primaryKeysWithValues: string): Observable<any> {
+    return this.http.delete(this.apiURL + `/${tableName}${primaryKeysWithValues}`, this.httpOptions)
       .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  resolveGet(tableName: string): Observable<any> {
+    return this.http.get(this.apiURL + `/${tableName}` + '?LeadingZeroForDecimal=yes', this.httpOptions)
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      );
+  }
+
+  resolveMetaTables(): Observable<any> {
+    return this.http.get(this.apiURL + '/tables', this.httpOptions)
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      );
+  }
+
+  resolveMetaColumns(tableName: string): Observable<any> {
+    return this.http.get(this.apiRoot + `/TableColumns/columns/${tableName}`, this.httpOptions)
+      .pipe(
+        retry(1),
         catchError(this.handleError)
       );
   }

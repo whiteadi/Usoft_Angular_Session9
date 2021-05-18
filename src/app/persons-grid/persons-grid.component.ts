@@ -41,12 +41,12 @@ export class PersonsGridComponent implements OnInit {
     })
   }
 
-
   onCellValueChanged(event) {
     console.log(
       'onCellValueChanged: ' + event.colDef.field + ' = ' + event.newValue + ' and Personid= ' + event.data.PERSON_ID
     );
-    return this.metaService.resolvePut('PERSON', 'PERSON_ID', event.data.PERSON_ID, `${event.colDef.field}="${event.newValue}"`).subscribe(
+    const primaryKeysWithValues = `;PERSON_ID=${event.data.PERSON_ID}`;
+    return this.metaService.resolvePut('PERSON', primaryKeysWithValues, `${event.colDef.field}="${event.newValue}"`).subscribe(
       (val) => {
         console.log("PUT call successful value returned in body",
           val);
@@ -62,9 +62,10 @@ export class PersonsGridComponent implements OnInit {
   getSelectedRowData() {
     let selectedData = this.gridApi.getSelectedRows();
     selectedData.forEach(element => {
-      console.log('delete person with id:', element.PERSON_ID);
+      const primaryKeysWithValues = `;PERSON_ID=${element.PERSON_ID}`;
+      console.log('delete person with id:', primaryKeysWithValues);
       /**
-      this.metaService.resolveDelete('PERSON', 'PERSON_ID', element.PERSON_ID).subscribe(
+      this.metaService.resolveDelete('PERSON', primaryKeysWithValues).subscribe(
         (val) => {
           console.log("DELETE call successful value returned in body",
             val);
@@ -83,6 +84,5 @@ export class PersonsGridComponent implements OnInit {
   onGridReady(params) {
     this.gridApi = params.api;
   }
-
 
 }

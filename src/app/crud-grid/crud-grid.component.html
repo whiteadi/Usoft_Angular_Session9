@@ -1,0 +1,34 @@
+<div class="select-container">
+  <h4>Select table to handle</h4>
+  <mat-form-field appearance="fill">
+    <mat-label>Table</mat-label>
+    <mat-select (selectionChange)="onTableChange($event)">
+      <mat-option *ngFor="let table of TablesMeta" [value]="table">
+        {{ table.tablename }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<mat-card
+  fxFlex
+  fxLayoutAlign="start center"
+  fxLayout="column"
+  class="containedstuff"
+  [style.borderRadius.px]="'0'"
+>
+  <button (click)="getSelectedRowData()" mat-raised-button color="primary">
+    Delete selected row(s)<mat-icon>delete</mat-icon>
+  </button>
+</mat-card>
+
+<ag-grid-angular
+  style="width: 100%; height: 50%"
+  class="ag-theme-material"
+  [rowData]="rowData"
+  [columnDefs]="columnDefs"
+  rowSelection="multiple"
+  (gridReady)="onGridReady($event)"
+  (cellValueChanged)="onCellValueChanged($event)"
+>
+</ag-grid-angular>

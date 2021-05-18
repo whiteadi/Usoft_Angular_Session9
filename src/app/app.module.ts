@@ -16,6 +16,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { CrudGridComponent } from './crud-grid/crud-grid.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import { MatButtonModule } from '@angular/material/button';
     PersonsComponent,
     PageNotFoundComponent,
     NewPersonComponent,
-    PersonsGridComponent
+    PersonsGridComponent,
+    CrudGridComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +39,8 @@ import { MatButtonModule } from '@angular/material/button';
     MatListModule,
     MatIconModule,
     MatCardModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

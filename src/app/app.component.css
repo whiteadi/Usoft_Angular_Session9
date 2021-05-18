@@ -10,3 +10,7 @@ button.active {
 th, td {
 padding: 5px;
 }
+.containedstuff {
+  padding: 15px;
+  overflow: auto;
+}
