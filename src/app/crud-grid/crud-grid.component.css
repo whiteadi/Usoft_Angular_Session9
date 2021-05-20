@@ -1,3 +1,17 @@
 .select-container {
   padding: 20px;
 }
+
+.insert-container {
+  text-align: center;
+}
+
+.form-container {
+  width: 400px;
+  margin: 0px auto;
+  margin-top: 50px;
+}
+
+.form-field {
+  display: block;
+}

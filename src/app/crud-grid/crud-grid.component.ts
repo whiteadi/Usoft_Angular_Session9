@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 import * as xml2js from 'xml2js';
 
@@ -6,7 +7,7 @@ import { MetaService } from '../service/meta.service';
 
 interface Column {
   $: { COLUMN_NAME: string, PRIMARY_KEY: string, FOREIGN_KEY: string, MANDATORY: string, INPUT_ALLOWED: string },
-  Domain: [{ $: { DATABASE_TYPE: string } }]
+  Domain: [{ $: { DATABASE_TYPE: string, SEQNO_TYPE: string } }]
 }
 
 interface columnValue {
@@ -15,8 +16,23 @@ interface columnValue {
   FK: boolean,
   MANDATORY: boolean,
   INPUT_ALLOWED: boolean,
-  PK: boolean
+  PK: boolean,
+  SEQ: boolean
 }
+
+interface Relationship {
+  $: { PARENT_TABLE: string, CHILD_TABLE: string },
+  Relationship_Columns: [{ Column: [{ $: { PARENT: string, CHILD: string } }] }]
+}
+
+interface relValue {
+  PARENT_TABLE: string,
+  CHILD_TABLE: string,
+  FK_COLUMN: string,
+  PK_COLUMN: string
+}
+
+
 
 @Component({
   selector: 'app-crud-grid',
@@ -32,7 +48,12 @@ export class CrudGridComponent implements OnInit {
   rowData: any[];
 
   selectedTable: string;
+  columns: columnValue[];
   pKs: any[];
+  RelationsMeta: any = {};
+  fKs: any[];
+  fkValues: any[] = [];
+
 
   private gridApi;
 
@@ -53,6 +74,7 @@ export class CrudGridComponent implements OnInit {
         }
         const allMeta = JSON.parse(JSON.stringify(result, null, 4)); //format your json output
         this.ColumnsMeta = allMeta.Meta.Columns[0].Column;
+        this.fetchRelations();
         this.getColumns(this.ColumnsMeta);
         this.loadTableValues(selectedTable.tablename);
       })
@@ -66,16 +88,17 @@ export class CrudGridComponent implements OnInit {
     const isFK = row.$?.FOREIGN_KEY === 'Y';
     const isMandatory = row.$?.MANDATORY === 'Y';
     const inputallowed = row.$?.INPUT_ALLOWED === 'Y';
+    const isDbSeq = row.Domain[0]?.$?.SEQNO_TYPE === 'RDMBS';
     const jsonValue = {
       NAME: columnName,
       TYPE: type,
       FK: isFK,
       MANDATORY: isMandatory,
       INPUT_ALLOWED: inputallowed,
-      PK: isPK
+      PK: isPK,
+      SEQ: isDbSeq
     };
     allColumns.push(jsonValue);
-
     return allColumns;
   }
 
@@ -90,11 +113,61 @@ export class CrudGridComponent implements OnInit {
       return { headerName, field, sortable, filter, editable };
     });
     this.pKs = this.getPks(columns);
+    this.columns = columns;
     return columns;
   }
 
   getPks(columns: columnValue[]): columnValue[] {
     return columns.filter(column => column.PK);
+  }
+
+  getFks(relations: relValue[]): relValue[] {
+    return relations.filter(rel => rel.CHILD_TABLE === this.selectedTable);
+  }
+
+  relationReducer(allRelations: relValue[], row: Relationship): relValue[] {
+    const childTabke = row.$?.CHILD_TABLE;
+    const parentTable = row.$?.PARENT_TABLE;
+    const columnFK = row.Relationship_Columns[0]?.Column[0].$.CHILD;
+    const parentColumnPK = row.Relationship_Columns[0].Column[0].$.PARENT;
+    const jsonValue = {
+      PARENT_TABLE: parentTable,
+      CHILD_TABLE: childTabke,
+      FK_COLUMN: columnFK,
+      PK_COLUMN: parentColumnPK
+    };
+    allRelations.push(jsonValue);
+    return allRelations;
+  }
+
+  getRelations(fetchedRelations: Relationship[]): relValue[] {
+    const rels = fetchedRelations.reduce(this.relationReducer, []);
+    this.fKs = this.getFks(rels);
+    this.getFKValues();
+    return rels;
+  }
+
+  getFKValues() {
+    this.fKs.map((value: relValue) => {
+      this.metaService.resolveGetPK(value.PARENT_TABLE, value.PK_COLUMN).subscribe((data: {}) => {
+        const fetchedFK = data[value.PARENT_TABLE].map(fkdata => fkdata[value.PK_COLUMN]);
+        this.fkValues[value.FK_COLUMN] = fetchedFK;
+      });
+    });
+  }
+
+  fetchRelations() {
+    this.metaService.resolveMetaRelations(this.selectedTable).subscribe((data: string) => {
+      const p: xml2js.Parser = new xml2js.Parser();
+      p.parseString(data, (err, result) => {
+        if (err) {
+          throw err;
+        }
+        const allRelationsMeta = JSON.parse(JSON.stringify(result, null, 4)); //format your json output
+        this.RelationsMeta = allRelationsMeta.Meta.Relationships[0].Relationship;
+        this.getRelations(this.RelationsMeta);
+      })
+    })
   }
 
   // Get tables meta
@@ -153,6 +226,35 @@ export class CrudGridComponent implements OnInit {
       },
       () => {
         console.log("The PUT observable is now completed.");
+      });
+  }
+
+  reduce(obj: object, initialValue: string) {
+    return Object.entries(obj).reduce(
+      (prev, [key, value]) => prev.concat(
+        key,
+        '="',
+        value,
+        '" '
+      ),
+      initialValue
+    )
+  };
+
+  onSubmit(myform: NgForm) {
+    const rowData = this.reduce(myform.value, "");
+    return this.metaService.resolvePost(this.selectedTable.toUpperCase(), rowData).subscribe(
+      (val) => {
+        console.log("POST call successful value returned in body",
+          val);
+        this.loadTableValues(this.selectedTable);
+        myform.reset();
+      },
+      response => {
+        console.log("POST call in error", response);
+      },
+      () => {
+        console.log("The POST observable is now completed.");
       });
   }
 

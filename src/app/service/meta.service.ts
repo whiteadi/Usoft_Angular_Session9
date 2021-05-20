@@ -40,10 +40,18 @@ export class MetaService {
       );
   }
 
+  resolveMetaRelations(tableName: string): Observable<any> {
+    return this.http.get(this.apiRoot + `/TableColumns/relations/${tableName}`, { ...this.httpOptions, responseType: 'text' })
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      );
+  }
+
   resolvePost(tableName: string, rowData: any): Observable<any> {
     console.log('Your form data : ', rowData);
     const newRow = `<${tableName} ${rowData} />`;
-    return this.http.post(this.apiURL + `/${tableName}`, newRow, this.httpOptionsPost)
+    return this.http.post(this.apiURL + `/${tableName}`, newRow, { ...this.httpOptionsPost, responseType: 'text' })
       .pipe(
         catchError(this.handleError)
       );
@@ -51,11 +59,12 @@ export class MetaService {
 
   resolvePut(tableName: string, primaryKeysWithValues: string, rowData: any): Observable<any> {
     const newRow = `<${tableName} ${rowData} />`;
-    return this.http.put(this.apiURL + `/${tableName}${primaryKeysWithValues}`, newRow, this.httpOptionsPost)
+    return this.http.put(this.apiURL + `/${tableName}${primaryKeysWithValues}`, newRow, { ...this.httpOptionsPost, responseType: 'text' })
       .pipe(
         catchError(this.handleError)
       );
   }
+
 
   resolveDelete(tableName: string, primaryKeysWithValues: string): Observable<any> {
     return this.http.delete(this.apiURL + `/${tableName}${primaryKeysWithValues}`, this.httpOptions)
@@ -82,6 +91,14 @@ export class MetaService {
 
   resolveMetaColumns(tableName: string): Observable<any> {
     return this.http.get(this.apiRoot + `/TableColumns/columns/${tableName}`, this.httpOptions)
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      );
+  }
+
+  resolveGetPK(tableName: string, pkName: string): Observable<any> {
+    return this.http.get(this.apiURL + `/${tableName}/columns;${pkName}` + '?LeadingZeroForDecimal=yes', this.httpOptions)
       .pipe(
         retry(1),
         catchError(this.handleError)

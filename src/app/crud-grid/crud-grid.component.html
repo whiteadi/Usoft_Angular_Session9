@@ -32,3 +32,39 @@
   (cellValueChanged)="onCellValueChanged($event)"
 >
 </ag-grid-angular>
+
+<div class="insert-container">
+  <div class="form-container" *ngIf="selectedTable">
+    <h1>Add new {{ selectedTable }}</h1>
+
+    <form #myform="ngForm" (ngSubmit)="onSubmit(myform)">
+      <mat-form-field
+        class="form-field"
+        appearance="outline"
+        *ngFor="let col of columns"
+      >
+        <mat-label> {{ col.NAME }} </mat-label>
+        <div *ngIf="!col.FK">
+          <input
+            matInput
+            name="{{ col.NAME }}"
+            id="{{ col.NAME }}"
+            ngModel
+            [required]="col.MANDATORY ? true : false"
+            [disabled]="col.PK && col.SEQ"
+          />
+        </div>
+        <div *ngIf="col.FK">
+          <mat-select>
+            <mat-option *ngFor="let fkValue of fkValues[col.NAME]">
+              {{ fkValue }}
+            </mat-option>
+          </mat-select>
+        </div>
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit">
+        insert into {{ selectedTable }}
+      </button>
+    </form>
+  </div>
+</div>
