@@ -20,6 +20,7 @@ import { CrudGridComponent } from './crud-grid/crud-grid.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { PersonComponent } from './person/person.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { MatInputModule } from '@angular/material/input';
     PageNotFoundComponent,
     NewPersonComponent,
     PersonsGridComponent,
-    CrudGridComponent
+    CrudGridComponent,
+    PersonComponent
   ],
   imports: [
     BrowserModule,

@@ -22,7 +22,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let person of Person.PERSON">
-            <td>{{ person.PERSON_ID }}</td>
+            <td><a [routerLink]="['/person']" [queryParams]="{personId: person.PERSON_ID}">{{ person.PERSON_ID }}</a></td>
             <td>{{ person.FIRST_NAME }} {{ person.FAMILY_NAME }}</td>
             <td>{{ person.ADDRESS }}</td>
             <td>resident of {{ person.CITY }} in {{ person.COUNTRY }}</td>

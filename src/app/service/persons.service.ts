@@ -13,6 +13,7 @@ export class PersonsService {
 
   // API end-point URL
   private readonly apiURL = environment.apiUrl;
+  private readonly apiRoot = environment.apiRoot;
 
   constructor(private http: HttpClient) { }
 
@@ -33,6 +34,17 @@ export class PersonsService {
     // we are calling .get() method over this.http object
     // this .get() method takes URL to call API
     return this.http.get(this.apiURL + '/PERSON;GENDER=M' + '?LeadingZeroForDecimal=yes', this.httpOptions)
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      );
+  }
+
+  // create a method named: resolvePerson()
+  // this method returns a-person by id in form of Observable
+  // every HTTTP call returns Observable object
+  resolvePerson(personId: string): Observable<any> {
+    return this.http.get(this.apiRoot + `/TableColumns/person/${personId}` + '?LeadingZeroForDecimal=yes', this.httpOptions)
       .pipe(
         retry(1),
         catchError(this.handleError)

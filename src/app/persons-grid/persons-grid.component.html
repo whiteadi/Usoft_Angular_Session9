@@ -11,7 +11,8 @@
 </mat-card>
 
 <ag-grid-angular
-  style="width: 1500px; height: 50%"
+  style="height: 100%"
+  [defaultColDef]="defaultColDef"
   class="ag-theme-material"
   id="myGrid"
   [rowData]="rowData"

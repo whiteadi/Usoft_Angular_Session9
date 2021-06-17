@@ -1,0 +1,17 @@
+<mat-card class="example-card">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-title>{{Person.FIRST_NAME}} {{Person.FAMILY_NAME}}</mat-card-title>
+      <mat-card-subtitle>{{Person.EMAIL}}</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="https://picsum.photos/400" alt="Photo of a {{Person.FIRST_NAME}} {{Person.FAMILY_NAME}}">
+    <mat-card-content>
+      <p>
+        Lives in {{Person.ADDRESS}}, {{Person.AREA_CODE}} {{Person.CITY}} and was born {{Person.BIRTH_DATE}}
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button>LIKE</button>
+      <button mat-button>SHARE</button>
+    </mat-card-actions>
+  </mat-card>

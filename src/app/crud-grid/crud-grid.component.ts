@@ -32,8 +32,6 @@ interface relValue {
   PK_COLUMN: string
 }
 
-
-
 @Component({
   selector: 'app-crud-grid',
   templateUrl: './crud-grid.component.html',

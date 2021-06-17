@@ -14,6 +14,9 @@ export class PersonsGridComponent implements OnInit {
 
   rowData: any = [];
   columnDefs: any = [];
+  defaultColDef: {
+    resizable: true,
+  };
 
   constructor(private personsService: PersonsService, private metaService: MetaService) { }
 
